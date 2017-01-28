@@ -17,6 +17,16 @@ public class MineSweeper {
     public static int findX;
     public static int findY;
     public static int numMines = 10;
+      public static final String ANSI_RESET = "\u001B[0m";
+public static final String ANSI_BLACK = "\u001B[30m";
+public static final String ANSI_RED = "\u001B[31m";
+public static final String ANSI_GREEN = "\u001B[32m";
+public static final String ANSI_YELLOW = "\u001B[33m";
+public static final String ANSI_BLUE = "\u001B[34m";
+public static final String ANSI_PURPLE = "\u001B[35m";
+public static final String ANSI_CYAN = "\u001B[36m";
+public static final String ANSI_WHITE = "\u001B[37m";
+    public static int numFlags = 10;
     static Node a0, a1, a2, a3, a4, a5, a6, a7, a8;
     static Node b0, b1, b2, b3, b4, b5, b6, b7, b8;
     static Node c0, c1, c2, c3, c4, c5, c6, c7, c8;
@@ -133,7 +143,8 @@ public class MineSweeper {
     public static void flag(){
         Scanner sc = new Scanner(System.in);
         String input;
-        
+        if(numFlags > 0){
+            System.out.println("Number of Flags left: "+numFlags);
         System.out.print("x: ");
         input = sc.nextLine().toLowerCase();
         if(input.equals("")){
@@ -152,10 +163,20 @@ public class MineSweeper {
             System.out.println("invalid y number!");
             flag();
         }else{
+            if(board[choseY-1][choseX-1].flagged == true){
+                
+            }else{
+            numFlags--;
+            }
+            
             board[choseY-1][choseX-1].flagged = true;
             print();
         }
         }
+        }
+    }else{
+            System.out.println("NOT ENOUGH FLAGS");
+            
         }
     }
     public static void uncover(){
@@ -227,7 +248,7 @@ public class MineSweeper {
             }
         }
     }
-    public static void placeMine(int tempX,int tempY){
+    public static void winCheck(int tempX,int tempY){
        
     }
     public static void numbers(int x, int y) {
@@ -259,14 +280,17 @@ public class MineSweeper {
     }
 
     public static void print() {
-        System.out.print("  1 2 3 4 5 6 7 8 9");
+        System.out.print("   1 2 3 4 5 6 7 8 9");
         System.out.println("");
         for (int i = 0; i < h; i++) {
-            System.out.print(i+1 +" "); 
+            System.out.print(i+1 +" |"); 
             for (int j = 0; j < w; j++) {
                 if(!board[i][j].hidden){
                 if (board[i][j].v == 10) {
                     System.out.print("m ");
+                }
+                else if (board[i][j].v == 0){
+                    System.out.print("  ");
                 }else {
                     System.out.print(board[i][j].v + " ");
                 }
