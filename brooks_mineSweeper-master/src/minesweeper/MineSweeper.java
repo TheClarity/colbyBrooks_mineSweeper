@@ -16,6 +16,7 @@ public class MineSweeper {
     public static int choseY;
     public static int findX;
     public static int findY;
+    public static int foundMines;
     public static int numMines = 10;
       public static final String ANSI_RESET = "\u001B[0m";
 public static final String ANSI_BLACK = "\u001B[30m";
@@ -54,6 +55,7 @@ public static final String ANSI_WHITE = "\u001B[37m";
 
     public static void main(String[] args) {
         // TODO code application logic here
+        
         init();
         print();
         mines();
@@ -135,6 +137,7 @@ public static final String ANSI_WHITE = "\u001B[37m";
         }else{
             uncover();
             print();
+            winCheck();
         }
         }
         }
@@ -170,6 +173,9 @@ public static final String ANSI_WHITE = "\u001B[37m";
             }
             
             board[choseY-1][choseX-1].flagged = true;
+            if(board[choseY-1][choseX-1].v ==10){
+                foundMines++;
+            }
             print();
         }
         }
@@ -248,8 +254,11 @@ public static final String ANSI_WHITE = "\u001B[37m";
             }
         }
     }
-    public static void winCheck(int tempX,int tempY){
-       
+    public static void winCheck(){
+       if(foundMines >= numMines){
+           play = false;
+           System.out.println("YOU WIN");
+       }
     }
     public static void numbers(int x, int y) {
         if (board[y][x].u != null && board[y][x].u.v != 10) {
@@ -285,6 +294,10 @@ public static final String ANSI_WHITE = "\u001B[37m";
         for (int i = 0; i < h; i++) {
             System.out.print(i+1 +" |"); 
             for (int j = 0; j < w; j++) {
+                if(board[i][j].flagged==true){
+                     
+                    System.out.print("▷ ");
+                    }else{
                 if(!board[i][j].hidden){
                 if (board[i][j].v == 10) {
                     System.out.print("m ");
@@ -294,17 +307,14 @@ public static final String ANSI_WHITE = "\u001B[37m";
                 }else {
                     System.out.print(board[i][j].v + " ");
                 }
+                
                 }
-                else if(board[i][j].flagged == false){
+                else{
+                    
                     System.out.print("◼ ");
                 }
-                 if(board[i][j].flagged==true){
-                     if(board[i][j].v == 10 && board[i][j].hidden == false){
-                         
-                     }else{
-                    System.out.print("▷ ");
-                     }
-                    }
+                }
+                 
             }
             System.out.println();
         }
